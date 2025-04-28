@@ -49,7 +49,7 @@ public class TheLedger {
              "Enter any of the following to filter your list of transaction: \n" +
              "   (A) ALL   (D) Deposits   (P) Payments   (R) Reports";
 
-     System.out.println(showAllTransactions());
+    // System.out.println(showAllTransactions());
 
      String ledgerOption;
         do{
