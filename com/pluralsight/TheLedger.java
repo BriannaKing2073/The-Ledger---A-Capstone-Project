@@ -48,6 +48,9 @@ public class TheLedger {
              "Below is the list of ALL of your Transaction History.\n" +
              "Enter any of the following to filter your list of transaction: \n" +
              "   (A) ALL   (D) Deposits   (P) Payments   (R) Reports";
+
+     System.out.println(showAllTransactions());
+
      String ledgerOption;
         do{
             System.out.println(ledgerScreenPrompt);
@@ -63,7 +66,7 @@ public class TheLedger {
             }else {
                 System.out.println("Sorry do not compute please try again later.");
             }
-        } while (ledgerOption != "");
+        } while (ledgerOption != "R");
 
     }
 
@@ -94,7 +97,7 @@ public class TheLedger {
             } else {
                 System.out.println("Sorry do not compute please try again later.");
             }
-        } while (reportOption != "");
+        } while (reportOption != "H");
 
     }
 
@@ -111,6 +114,8 @@ public class TheLedger {
     //show All Transactions (needed From Ledger)
     private static void showAllTransactions(){
 
+        System.out.println("Wow look at All of these transactions.*Wow face emoji*");
+
     }
 
     //show only a list of Deposits (Extra From Ledger)
@@ -123,39 +128,55 @@ public class TheLedger {
 
     }
 
-    //show Reports from Month To Date (needed? From Reports)
+    //show Reports from Month To Date (needed From Reports)
     private static void showMonthToDate(){
+        //ask for date
+        System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
+        String todaysDate = scanner.nextLine();
 
     }
 
-    //show Reports from Previous Month (needed? From Reports)
+    //show Reports from Previous Month (needed From Reports)
     private static void showPreviousMonth(){
+        //ask for date
 
     }
 
-    //show Reports from Year To Date (needed? From Reports)
+    //show Reports from Year To Date (needed From Reports)
     private static void showYearToDate(){
+        //ask for date
 
     }
 
-    //show Reports from Previous Year (needed? From Reports)
+    //show Reports from Previous Year (needed From Reports)
     private static void showPreviousYear(){
+        //ask for date
 
     }
 
-    //show Reports from Search by Vendor (needed? From Reports)
+    //show Reports from Search by Vendor (needed From Reports)
         //need to generate a list of vendors to chose from then create a list of transactions
     private static void searchByVendor(){
 
+        System.out.println("Enter Vendor Name: ");
+        String vendorSearch = scanner.nextLine();
+        //if match get transaction list
+        //else if ask to try again
+            //if yes starts search over
+            //else if
     }
 
     //go Back to Ledger Screen (needed From Reports) debating on multi use
     private static void backToLedger(){
 
+        OpenLedger();
+
     }
 
     //return to Home Screen (needed From Reports)
     private static void returnToHome(){
+
+        HomeScreen();
 
     }
 
