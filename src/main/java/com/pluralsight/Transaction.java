@@ -1,23 +1,26 @@
 package com.pluralsight;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.regex.Pattern;
 
 public class Transaction {
 
-    private String date;{
-        String[] parts = date.split(Pattern.quote("-"));
-        String Year = parts[0];
-        String Month = parts[1];
-        String Day = parts[2];
-    };
+    private String date;
+//    {
+//        String[] parts = date.split(Pattern.quote("-"));
+//        String Year = parts[0];
+//        String Month = parts[1];
+//        String Day = parts[2];
+//    };
     private String time;
     private String description;
     private String vendor;
-    private int amount;
+    private double amount;
 
 
     //Constructors
-    public Transaction(String date, String time, String description, String vendor, int amount) {
+    public Transaction(String date, String time, String description, String vendor, double amount) {
         this.date = date;
         this.time = time;
         this.description = description;
@@ -48,30 +51,36 @@ public class Transaction {
     }
 
     public void setDescription(String description) {
+
         this.description = description;
     }
 
     public String getVendor() {
+
         return vendor;
     }
 
     public void setVendor(String vendor) {
+
         this.vendor = vendor;
     }
 
-    public int getAmount() {
+    public double getAmount() {
 
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
 
         this.amount = amount;
     }
+
+
+
     //Formating Transaction Text
     //
     public String getFormattedTransactionsText(){
-        return String.format("%-12s %-10s %-40s %-20s %-10", this.date, this.time, this.description, this.vendor, this.amount);
+        return String.format("%-12s %-10s %-40s %-20s %-10d", this.date, this.time, this.description, this.vendor, this.amount);
     }
     public static String getFormattedTransactionsTextHeader(){
         return   "DATE        TIME      DESCRIPTION                             VENDOR              AMOUNT    \n"

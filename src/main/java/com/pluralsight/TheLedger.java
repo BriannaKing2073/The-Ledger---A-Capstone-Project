@@ -1,45 +1,57 @@
 package com.pluralsight;
 
-import java.util.Scanner;
+import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Scanner;;
 
 public class TheLedger {
 
     private static Scanner scanner = new Scanner(System.in);
+    private static ArrayList<Transaction> transactions;
+    private static FileManager fileManager = new FileManager("transactions.csv");
+
+    // Creating a file reader
+
+    //static BufferedReader bufferedReader = new BufferedReader(new FileReader("transactions.csv"));
 
     public static void main(String[] args){
 
-    HomeScreen();
+        transactions = fileManager.getTransactionsFromFile();
+
+        HomeScreen();
 
     }
 
     //Home Screen (required)
     private static void HomeScreen(){
 
-    String homeScreenPrompt = "Please select an option from the following:\n"+
-            " (D) Add Deposit\n"+
-            " (P) Make a Payment\n"+
-            " (L) Ledger\n"+
-            " (X) Exit\n"+
-            "(D,P,L,X): ";
-    String option;
-    do{
-        System.out.println(homeScreenPrompt);
-        option = scanner.nextLine();
-        if(option.equalsIgnoreCase("D")){
-            OpenAddDeposit();
-        } else if (option.equalsIgnoreCase("P")) {
-            OpenMakeAPayment();
-        } else if (option.equalsIgnoreCase("L")) {
-            OpenLedger();
-        } else if (option.equalsIgnoreCase("X")) {
-            StartProgramExit();
-        }else {
-            System.out.println("Sorry do not compute please try again later.");
-        }
-    } while (option != "X");
-
-
+        String homeScreenPrompt = "Please select an option from the following:\n"+
+                " (D) Add Deposit\n"+
+                " (P) Make a Payment\n"+
+                " (L) Ledger\n"+
+                " (X) Exit\n"+
+                "(D,P,L,X): ";
+        String option;
+        do{
+            System.out.println(homeScreenPrompt);
+            option = scanner.nextLine();
+            if(option.equalsIgnoreCase("D")){
+                OpenAddDeposit();
+            } else if (option.equalsIgnoreCase("P")) {
+                OpenMakeAPayment();
+            } else if (option.equalsIgnoreCase("L")) {
+                OpenLedger();
+            } else if (option.equalsIgnoreCase("X")) {
+                StartProgramExit();
+            }else {
+                System.out.println("Sorry do not compute please try again later.");
+            }
+        } while (option != "X");
     }
+
+
 
     //Ledger (required)
         //should I add a back or exit button?
@@ -48,8 +60,6 @@ public class TheLedger {
              "Below is the list of ALL of your Transaction History.\n" +
              "Enter any of the following to filter your list of transaction: \n" +
              "   (A) ALL   (D) Deposits   (P) Payments   (R) Reports";
-
-    // System.out.println(showAllTransactions());
 
      String ledgerOption;
         do{
@@ -101,30 +111,80 @@ public class TheLedger {
 
     }
 
-    //Add Deposit (Extra From Home)
-    private static void OpenAddDeposit(){
+    //ArrayList<Here > here transactions = new ArrayList<And here>();
 
+    //Add Deposit (needed From Home)
+    private static void OpenAddDeposit(){
+        System.out.println("ADD DEPOSIT\n" +
+                "Enter Date: (Ex. YYYY-MM-DD) ");
+        String addDepositDate = scanner.nextLine();
+
+        System.out.println("Enter Time: (Ex. HH:MM:SS) ");
+        String addDepositTime = scanner.nextLine();
+
+        System.out.println("Enter Deposit Description:\n");
+        String addDepositDescription = scanner.nextLine();
+
+        System.out.println("Enter Vendor: ");
+        String addDepositVendor = scanner.nextLine();
+
+        System.out.println("Enter Deposit Amount: (Ex. 00.00) ");
+        double addDepositAmount = scanner.nextDouble();
+
+        Transaction theNewTransaction = new Transaction(addDepositDate, addDepositTime, addDepositDescription, addDepositVendor, addDepositAmount);
     }
 
-    //Make A Payment (Extra From Home)
+    //Make A Payment (needed From Home)
     private static void OpenMakeAPayment(){
+        System.out.println("MAKE A PAYMENT\n" +
+                "Enter Date: (Ex. YYYY-MM-DD) ");
+        String makeAPaymentDate = scanner.nextLine();
+
+        System.out.println("Enter Time: (Ex. HH:MM:SS) ");
+        String makeAPaymentTime = scanner.nextLine();
+
+        System.out.println("Enter Payment Description:\n");
+        String makeAPaymentDescription = scanner.nextLine();
+
+        System.out.println("Enter Vendor: ");
+        String makeAPaymentVendor = scanner.nextLine();
+
+        System.out.println("Enter Payment Amount: (Ex. -00.00) ");
+        double makeAPaymentAmount = scanner.nextDouble();
+
+        Transaction theNewTransaction = new Transaction(makeAPaymentDate, makeAPaymentTime, makeAPaymentDescription, makeAPaymentVendor, makeAPaymentAmount);
 
     }
 
     //show All Transactions (needed From Ledger)
-    private static void showAllTransactions(){
+    private static void showAllTransactions() {
 
-        System.out.println("Wow look at All of these transactions.*Wow face emoji*");
+        for(Transaction t : transactions){
+                System.out.println(t.getDate() + " " +t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+        }
+
 
     }
 
-    //show only a list of Deposits (Extra From Ledger)
+    //show only a list of Deposits (needed From Ledger)
     private static void showDeposits(){
 
+        for(Transaction t : transactions){
+            if(t.getAmount() > 0){
+                System.out.println(t.getDate() + " " +t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+            }
+        }
+
     }
 
-    //show only a list of Payments (Extra From Ledger)
-    private static void showPayments(){
+    //show only a list of Payments (needed From Ledger)
+    private static void showPayments() {
+
+        for(Transaction t : transactions){
+            if(t.getAmount() < 0){
+                System.out.println(t.getDate() + " " +t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+            }
+        }
 
     }
 
@@ -132,20 +192,23 @@ public class TheLedger {
     private static void showMonthToDate(){
         //ask for date
         System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
-        String todaysDate = scanner.nextLine();
+        String todaysDateMTD = scanner.nextLine();
+
 
     }
 
     //show Reports from Previous Month (needed From Reports)
     private static void showPreviousMonth(){
         //ask for date
-
+        System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
+        String todaysDatePM = scanner.nextLine();
     }
 
     //show Reports from Year To Date (needed From Reports)
     private static void showYearToDate(){
         //ask for date
-
+        System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
+        String todaysDateYTD = scanner.nextLine();
     }
 
     //show Reports from Previous Year (needed From Reports)
@@ -183,5 +246,8 @@ public class TheLedger {
     //Exit (Meh) debating on multi use
     private static void StartProgramExit(){
 
-    }
+        }
+
+
 }
+
