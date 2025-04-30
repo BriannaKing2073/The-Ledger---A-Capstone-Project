@@ -8,9 +8,9 @@ import java.util.Scanner;;
 
 public class TheLedger {
 
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
     private static ArrayList<Transaction> transactions;
-    private static FileManager fileManager = new FileManager("transactions.csv");
+    private static final FileManager fileManager = new FileManager("transactions.csv");
 
     // Creating a file reader
 
@@ -19,7 +19,6 @@ public class TheLedger {
     public static void main(String[] args){
 
         transactions = fileManager.getTransactionsFromFile();
-
         HomeScreen();
 
     }
@@ -27,7 +26,8 @@ public class TheLedger {
     //Home Screen (required)
     private static void HomeScreen(){
 
-        String homeScreenPrompt = "Please select an option from the following:\n"+
+        String homeScreenPrompt = "Welcome this is the Homepage of The Ledger\n" +
+                "Please select an option from the following:\n"+
                 " (D) Add Deposit\n"+
                 " (P) Make a Payment\n"+
                 " (L) Ledger\n"+
@@ -48,7 +48,7 @@ public class TheLedger {
             }else {
                 System.out.println("Sorry do not compute please try again later.");
             }
-        } while (option != "X");
+        } while (!option.equalsIgnoreCase("X"));
     }
 
 
@@ -59,7 +59,7 @@ public class TheLedger {
      String ledgerScreenPrompt = "Welcome to The Ledger\n" +
              "Below is the list of ALL of your Transaction History.\n" +
              "Enter any of the following to filter your list of transaction: \n" +
-             "   (A) ALL   (D) Deposits   (P) Payments   (R) Reports";
+             "   (A) ALL   (D) Deposits   (P) Payments   (R) Reports (H) Return To Home ";
 
      String ledgerOption;
         do{
@@ -73,7 +73,9 @@ public class TheLedger {
                 showPayments();
             } else if (ledgerOption.equalsIgnoreCase("R")) {
                 ReportsScreen();
-            }else {
+            } else if (ledgerOption.equalsIgnoreCase("H")) {
+                returnToHome();
+            } else {
                 System.out.println("Sorry do not compute please try again later.");
             }
         } while (ledgerOption != "R");
@@ -82,7 +84,7 @@ public class TheLedger {
 
     //Reports (required From Ledger)
     private static void ReportsScreen(){
-    String ReportsScreenPrompt = "Reports\n" +
+    String ReportsScreenPrompt = "Welcome to Reports\n" +
             "These are Transaction Reports and they can be filtered by entering:\n" +
             "   (1) Month To Date   (2) Previous Month   (3) Year To Date   (4) Previous Year \n" +
             "   (5) Search By Vendor   (0) Back To Ledger   (H) Return To Home ";
@@ -115,12 +117,14 @@ public class TheLedger {
 
     //Add Deposit (needed From Home)
     private static void OpenAddDeposit(){
-        System.out.println("ADD DEPOSIT\n" +
-                "Enter Date: (Ex. YYYY-MM-DD) ");
-        String addDepositDate = scanner.nextLine();
+//        System.out.println("ADD DEPOSIT\n" +
+//                "Enter Date: (Ex. YYYY-MM-DD) ");
+//        String addDepositDate = scanner.nextLine();
+        LocalDate addDepositDate = LocalDate.now();
 
-        System.out.println("Enter Time: (Ex. HH:MM:SS) ");
-        String addDepositTime = scanner.nextLine();
+//        System.out.println("Enter Time: (Ex. HH:MM:SS) ");
+//        String addDepositTime = scanner.nextLine();
+        LocalTime addDepositTime = LocalTime.now();
 
         System.out.println("Enter Deposit Description:\n");
         String addDepositDescription = scanner.nextLine();
@@ -132,16 +136,19 @@ public class TheLedger {
         double addDepositAmount = scanner.nextDouble();
 
         Transaction theNewTransaction = new Transaction(addDepositDate, addDepositTime, addDepositDescription, addDepositVendor, addDepositAmount);
+        transactions.add(theNewTransaction);
     }
 
     //Make A Payment (needed From Home)
     private static void OpenMakeAPayment(){
-        System.out.println("MAKE A PAYMENT\n" +
-                "Enter Date: (Ex. YYYY-MM-DD) ");
-        String makeAPaymentDate = scanner.nextLine();
+//        System.out.println("MAKE A PAYMENT\n" +
+//                "Enter Date: (Ex. YYYY-MM-DD) ");
+//        String makeAPaymentDate = scanner.nextLine();
+        LocalDate makeAPaymentDate = LocalDate.now();
 
-        System.out.println("Enter Time: (Ex. HH:MM:SS) ");
-        String makeAPaymentTime = scanner.nextLine();
+//        System.out.println("Enter Time: (Ex. HH:MM:SS) ");
+//        String makeAPaymentTime = scanner.nextLine();
+        LocalTime makeAPaymentTime = LocalTime.now();
 
         System.out.println("Enter Payment Description:\n");
         String makeAPaymentDescription = scanner.nextLine();
@@ -153,7 +160,7 @@ public class TheLedger {
         double makeAPaymentAmount = scanner.nextDouble();
 
         Transaction theNewTransaction = new Transaction(makeAPaymentDate, makeAPaymentTime, makeAPaymentDescription, makeAPaymentVendor, makeAPaymentAmount);
-
+        transactions.add(theNewTransaction);
     }
 
     //show All Transactions (needed From Ledger)
@@ -189,32 +196,69 @@ public class TheLedger {
     }
 
     //show Reports from Month To Date (needed From Reports)
-    private static void showMonthToDate(){
-        //ask for date
-        System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
-        String todaysDateMTD = scanner.nextLine();
+    private static void showMonthToDate() {
+        //ask for date is it only current month or 4/29/25-3/28/25
+//        System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
+//        String todaysDateMTD = scanner.nextLine();
+        LocalDate todaysDateMTD = LocalDate.now();
+        int year = todaysDateMTD.getYear();
+        int month = todaysDateMTD.getMonthValue();
+        int day = todaysDateMTD.getDayOfMonth();
 
-
+        for (Transaction t : transactions) {
+            if (t.getDate().getMonthValue() == month && t.getDate().getYear() == year) {
+                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+            }
+        }
     }
 
     //show Reports from Previous Month (needed From Reports)
     private static void showPreviousMonth(){
         //ask for date
-        System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
-        String todaysDatePM = scanner.nextLine();
+//        System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
+//        String todaysDatePM = scanner.nextLine();
+        LocalDate todaysDatePM = LocalDate.now();
+        int year = todaysDatePM.getYear();
+        int month = todaysDatePM.getMonthValue();
+        int day = todaysDatePM.getDayOfMonth();
+
+        for (Transaction t : transactions) {
+            if (t.getDate().getMonthValue() == month - 1  && t.getDate().getYear() == year) {
+                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+            }
+        }
     }
 
     //show Reports from Year To Date (needed From Reports)
     private static void showYearToDate(){
         //ask for date
-        System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
-        String todaysDateYTD = scanner.nextLine();
+//        System.out.println("Enter Today's Date:(Ex.YYYY-MM-DD)");
+//        String todaysDateYTD = scanner.nextLine();
+        LocalDate todaysDateYTD = LocalDate.now();
+        int year = todaysDateYTD.getYear();
+        int month = todaysDateYTD.getMonthValue();
+        int day = todaysDateYTD.getDayOfMonth();
+
+        for (Transaction t : transactions) {
+            if (t.getDate().getYear() == year) {
+                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+            }
+        }
     }
 
     //show Reports from Previous Year (needed From Reports)
     private static void showPreviousYear(){
         //ask for date
+        LocalDate todaysDatePY = LocalDate.now();
+        int year = todaysDatePY.getYear();
+        int month = todaysDatePY.getMonthValue();
+        int day = todaysDatePY.getDayOfMonth();
 
+        for (Transaction t : transactions) {
+            if (t.getDate().getYear() == year - 1) {
+                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+            }
+        }
     }
 
     //show Reports from Search by Vendor (needed From Reports)
@@ -224,9 +268,15 @@ public class TheLedger {
         System.out.println("Enter Vendor Name: ");
         String vendorSearch = scanner.nextLine();
         //if match get transaction list
-        //else if ask to try again
+        for (Transaction t : transactions) {
+            if (t.getVendor().equalsIgnoreCase(vendorSearch) ) {
+                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+            }//else if ask to try again
             //if yes starts search over
             //else if
+        }
+
+
     }
 
     //go Back to Ledger Screen (needed From Reports) debating on multi use
@@ -245,6 +295,9 @@ public class TheLedger {
 
     //Exit (Meh) debating on multi use
     private static void StartProgramExit(){
+
+        System.out.println("That's All Folks");
+        //System.exit(0);
 
         }
 

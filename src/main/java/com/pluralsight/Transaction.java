@@ -2,25 +2,24 @@ package com.pluralsight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.regex.Pattern;
 
 public class Transaction {
 
-    private String date;
+    private LocalDate date;
 //    {
 //        String[] parts = date.split(Pattern.quote("-"));
 //        String Year = parts[0];
 //        String Month = parts[1];
 //        String Day = parts[2];
 //    };
-    private String time;
+    private LocalTime time;
     private String description;
     private String vendor;
     private double amount;
 
 
     //Constructors
-    public Transaction(String date, String time, String description, String vendor, double amount) {
+    public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
         this.date = date;
         this.time = time;
         this.description = description;
@@ -30,19 +29,19 @@ public class Transaction {
 
     //Getters and Setters
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public String getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
@@ -79,11 +78,11 @@ public class Transaction {
 
     //Formating Transaction Text
     //
-    public String getFormattedTransactionsText(){
-        return String.format("%-12s %-10s %-40s %-20s %-10d", this.date, this.time, this.description, this.vendor, this.amount);
-    }
-    public static String getFormattedTransactionsTextHeader(){
-        return   "DATE        TIME      DESCRIPTION                             VENDOR              AMOUNT    \n"
-                +"___________ _________ _______________________________________ ___________________ ___________";
-    }
+//    public String getFormattedTransactionsText(){
+//        return String.format("%-12l | %-10l | %-40s | %-30s | %-10d", this.date, this.time, this.description, this.vendor, this.amount);
+//    }
+//    public static String getFormattedTransactionsTextHeader(){
+//        return   "DATE        TIME      DESCRIPTION                             VENDOR                          AMOUNT    \n"
+//                +"___________ _________ _______________________________________ _______________________________ __________";
+//    }
 }
