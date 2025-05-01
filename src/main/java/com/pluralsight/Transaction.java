@@ -2,6 +2,7 @@ package com.pluralsight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
 
@@ -74,15 +75,53 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public String getEncodedTransactionString() {
+        //todo: return a value that looks like:
+        // 2024-09-30|22:05:34|LARP Equipment Upgrade|Medieval Collectibles|-245.00
+        //this.date.format()
+        String formattedDate = this.date.toString();
+        String formattedTime;
 
+        DateTimeFormatter formatterDate;
+        DateTimeFormatter formatterTime;
+
+//        formattedDate = String.valueOf(getDate());
+//        formatterDate = DateTimeFormatter.ofPattern("yyyy-dd-MM");
+//
+        formattedTime = String.valueOf(getTime());
+        formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+//
+//        LocalDate date = LocalDate.parse(formattedDate,formatterDate);
+        LocalTime time = LocalTime.parse(formattedTime, formatterTime);
+
+
+        return String.format("%s|%s|%s|%s|%f", formattedDate, time, this.description, this.vendor, this.amount);
+
+    }
 
     //Formating Transaction Text
     //
-//    public String getFormattedTransactionsText(){
-//        return String.format("%-12l | %-10l | %-40s | %-30s | %-10d", this.date, this.time, this.description, this.vendor, this.amount);
-//    }
-//    public static String getFormattedTransactionsTextHeader(){
-//        return   "DATE        TIME      DESCRIPTION                             VENDOR                          AMOUNT    \n"
-//                +"___________ _________ _______________________________________ _______________________________ __________";
-//    }
+    public String getFormattedTransactionsText() {
+        //this.date.format()
+        String formattedDate = this.date.toString();
+        String formattedTime;
+
+        DateTimeFormatter formatterDate;
+        DateTimeFormatter formatterTime;
+
+//        formattedDate = String.valueOf(getDate());
+//        formatterDate = DateTimeFormatter.ofPattern("yyyy-dd-MM");
+//
+        formattedTime = String.valueOf(getTime());
+        formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+//
+//        LocalDate date = LocalDate.parse(formattedDate,formatterDate);
+        LocalTime time = LocalTime.parse(formattedTime, formatterTime);
+
+        return String.format("%-12s |  %-10s | %-40s | %-30s | %-10f", formattedDate, time, this.description, this.vendor, this.amount);
+    }
+    public static String getFormattedTransactionsTextHeader(){
+        return   "DATE        TIME      DESCRIPTION                             VENDOR                          AMOUNT    \n"
+                +"___________ _________ _______________________________________ _______________________________ __________";
+    }
 }

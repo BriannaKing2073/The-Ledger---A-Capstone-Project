@@ -2,6 +2,7 @@ package com.pluralsight;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -44,7 +45,7 @@ public class FileManager {
 
                // System.out.println(thisLine);
 
-                Transaction createdTransaction = getTransactionFromEncodedString(thisLine);// = ?
+                Transaction createdTransaction = getTransactionFromEncodedString(thisLine);
 
                  result.add(createdTransaction);
             }
@@ -56,10 +57,11 @@ public class FileManager {
             System.out.println("There was an error reading from the file.");
         }
         //Collections.sort(numbers.getDate);
+
         return result;
     }
 
-    private static Transaction getTransactionFromEncodedString(String encodedTransaction) {
+    private Transaction getTransactionFromEncodedString(String encodedTransaction) {
 
         String[] temp = encodedTransaction.split(Pattern.quote("|"));
         //Use only to view errors System.out.println(encodedTransaction);
@@ -71,21 +73,24 @@ public class FileManager {
 
         Transaction result = new Transaction(date, time, description, vendor, amount);
 
-
-
         return result;
     }
 
+   //updateTransactionFile
+    public void updateTransactionFile(Transaction newTransaction){
+
+        try(FileWriter writer = new FileWriter(fileName)){
+            writer.write(newTransaction.getEncodedTransactionString());
+            System.out.println("Your new Transaction is complete.Transactions have been updated.");
+
+        }catch (IOException e){
+            System.out.println("An error has been encountered: " + e.getMessage());
+        }
+    }
+
+
 }
-//Formating Transaction Text
-//
-//        public String getFormattedTransactionsText(){
-//            return String.format("%-12l | %-10l | %-40s | %-30s | %-10d", this.date, this.time, this.description, this.vendor, this.amount);
-//        }
-//        public static String getFormattedTransactionsTextHeader(){
-//            return   "DATE        TIME      DESCRIPTION                             VENDOR                          AMOUNT    \n"
-//                    +"___________ _________ _______________________________________ _______________________________ __________";
-//        }
+
 
 
 

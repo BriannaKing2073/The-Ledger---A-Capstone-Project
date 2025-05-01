@@ -13,7 +13,6 @@ public class TheLedger {
     private static final FileManager fileManager = new FileManager("transactions.csv");
 
     // Creating a file reader
-
     //static BufferedReader bufferedReader = new BufferedReader(new FileReader("transactions.csv"));
 
     public static void main(String[] args){
@@ -51,8 +50,6 @@ public class TheLedger {
         } while (!option.equalsIgnoreCase("X"));
     }
 
-
-
     //Ledger (required)
         //should I add a back or exit button?
     private static void OpenLedger(){
@@ -78,7 +75,7 @@ public class TheLedger {
             } else {
                 System.out.println("Sorry do not compute please try again later.");
             }
-        } while (ledgerOption != "R");
+        } while (!ledgerOption.equalsIgnoreCase("R"));
 
     }
 
@@ -137,6 +134,8 @@ public class TheLedger {
 
         Transaction theNewTransaction = new Transaction(addDepositDate, addDepositTime, addDepositDescription, addDepositVendor, addDepositAmount);
         transactions.add(theNewTransaction);
+        fileManager.updateTransactionFile(theNewTransaction);
+
     }
 
     //Make A Payment (needed From Home)
@@ -161,13 +160,15 @@ public class TheLedger {
 
         Transaction theNewTransaction = new Transaction(makeAPaymentDate, makeAPaymentTime, makeAPaymentDescription, makeAPaymentVendor, makeAPaymentAmount);
         transactions.add(theNewTransaction);
+        fileManager.updateTransactionFile(theNewTransaction);
     }
 
     //show All Transactions (needed From Ledger)
     private static void showAllTransactions() {
 
         for(Transaction t : transactions){
-                System.out.println(t.getDate() + " " +t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+            System.out.println(t.getFormattedTransactionsText());
+                //System.out.println(t.getDate() + " " +t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
         }
 
 
@@ -178,7 +179,8 @@ public class TheLedger {
 
         for(Transaction t : transactions){
             if(t.getAmount() > 0){
-                System.out.println(t.getDate() + " " +t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+                System.out.println(t.getFormattedTransactionsText());
+                //System.out.println(t.getDate() + " " +t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
             }
         }
 
@@ -189,7 +191,8 @@ public class TheLedger {
 
         for(Transaction t : transactions){
             if(t.getAmount() < 0){
-                System.out.println(t.getDate() + " " +t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+                System.out.println(t.getFormattedTransactionsText());
+                //System.out.println(t.getDate() + " " +t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
             }
         }
 
@@ -207,7 +210,8 @@ public class TheLedger {
 
         for (Transaction t : transactions) {
             if (t.getDate().getMonthValue() == month && t.getDate().getYear() == year) {
-                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+                System.out.println(t.getFormattedTransactionsText());
+                //System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
             }
         }
     }
@@ -224,7 +228,8 @@ public class TheLedger {
 
         for (Transaction t : transactions) {
             if (t.getDate().getMonthValue() == month - 1  && t.getDate().getYear() == year) {
-                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+                System.out.println(t.getFormattedTransactionsText());
+                //System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
             }
         }
     }
@@ -241,7 +246,8 @@ public class TheLedger {
 
         for (Transaction t : transactions) {
             if (t.getDate().getYear() == year) {
-                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+                System.out.println(t.getFormattedTransactionsText());
+                //System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
             }
         }
     }
@@ -256,7 +262,8 @@ public class TheLedger {
 
         for (Transaction t : transactions) {
             if (t.getDate().getYear() == year - 1) {
-                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+                System.out.println(t.getFormattedTransactionsText());
+                //System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
             }
         }
     }
@@ -270,7 +277,8 @@ public class TheLedger {
         //if match get transaction list
         for (Transaction t : transactions) {
             if (t.getVendor().equalsIgnoreCase(vendorSearch) ) {
-                System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
+                System.out.println(t.getFormattedTransactionsText());
+                //System.out.println(t.getDate() + " " + t.getTime() + " | " + t.getDescription() + " | " + t.getVendor() + "  $" + t.getAmount());
             }//else if ask to try again
             //if yes starts search over
             //else if
@@ -299,7 +307,7 @@ public class TheLedger {
         System.out.println("That's All Folks");
         //System.exit(0);
 
-        }
+    }
 
 
 }
